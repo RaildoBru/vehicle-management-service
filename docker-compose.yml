@@ -1,0 +1,38 @@
+services:
+
+  app:
+    build: .
+    container_name: vehicle-management-service
+
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    env_file:
+      - .env
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+
+    container_name: vehicle-management-db
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: vehicle_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - vehicle_management_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  vehicle_management_postgres_data:
