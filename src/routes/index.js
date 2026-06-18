@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-const healthRoutes = require('./health.routes');
-const vehicleRoutes = require('./vehicle.routes');
+import healthRoutes from './health.routes.js';
+import vehicleRoutes from './vehicle.routes.js';
 
 const router = express.Router();
 
@@ -10,4 +10,4 @@ router.use(
     vehicleRoutes
 );
 
-module.exports = router;
+export default router;

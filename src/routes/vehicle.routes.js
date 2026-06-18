@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
 
-router.get('/list', (req, res) => {
+router.get('/vehicles', (req, res) => {
   res.status(200).json({
     teste: 'teste'
   });
 });
 
-module.exports = router;
+export default router;

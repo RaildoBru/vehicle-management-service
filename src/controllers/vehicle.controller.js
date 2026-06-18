@@ -1,8 +1,9 @@
-const Vehicle = require('../models/vehicle.model');
+
 
 /**
  * Lista todos os veículos ou filtra por query (ex: ?make=Ford)
  */
+/*
 async function listVehicles(req, res) {
 	try {
 		const filters = { ...req.query };
@@ -17,3 +18,4 @@ async function listVehicles(req, res) {
 module.exports = {
 	listVehicles,
 };
+*/

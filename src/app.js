@@ -1,7 +1,6 @@
-const express = require('express');
-require("dotenv").config();
-
-const routes = require('./routes');
+import express from 'express';
+import 'dotenv/config';
+import routes from './routes/index.js';
 
 const app = express();
 
@@ -9,4 +8,4 @@ app.use(express.json());
 
 app.use(routes);
 
-module.exports = app;
+export default app;
