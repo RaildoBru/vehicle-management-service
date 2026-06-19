@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model vehicles {
+  id    String @id @default(uuid())
+  brand     String
+  model     String
+  year      Int
+  color     String
+  price     Decimal
+  status    VehicleStatus @default(AVAILABLE)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  PENDING_PAYMENT
+  SOLD
+}

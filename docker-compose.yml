@@ -1,8 +1,10 @@
 services:
-
+  
   app:
     build: .
     container_name: vehicle-management-service
+    
+    
 
     ports:
       - "${PORT}:${PORT}"

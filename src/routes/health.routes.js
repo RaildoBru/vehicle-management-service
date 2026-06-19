@@ -3,9 +3,15 @@ import express from 'express';
 const router = express.Router();
 
 router.get('/health', (req, res) => {
+  const uptime = process.uptime();
+
   res.status(200).json({
     status: 'ok',
-    uptime: process.uptime(),
+    uptime: {
+      hours: Math.floor(uptime / 3600),
+      minutes: Math.floor(uptime / 60),
+      seconds: Math.floor(uptime),
+    },
     timestamp: new Date().toISOString(),
   });
 });
