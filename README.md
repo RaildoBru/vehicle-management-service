@@ -1,6 +1,6 @@
-# [Nome do Microserviço] - Avaliação de Pós-Graduação
+# [Vehicle Management Service] - Avaliação de Pós-Graduação
 
-Este repositório contém o microserviço desenvolvido como parte da avaliação para o curso de Pós-Graduação em [Nome do Seu Curso, ex: Engenharia de Software / Arquitetura de Software].
+//Este repositório contém o microserviço desenvolvido como parte da avaliação para o curso de Pós-Graduação em [Nome do Seu Curso, ex: Engenharia de Software / Arquitetura de Software].
 
 O projeto consiste em um microserviço conteinerizado que expõe uma API para [breve descrição da funcionalidade principal, ex: processamento de pagamentos / gerenciamento de usuários].
 
@@ -8,8 +8,8 @@ O projeto consiste em um microserviço conteinerizado que expõe uma API para [b
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Linguagem/Framework:** [Ex: Node.js com NestJS / Python com FastAPI / Java Spring Boot]
-* **Banco de Dados:** [Ex: PostgreSQL / MySQL / MongoDB]
+* **Linguagem/Framework:** [ Node.js com Express.js]
+* **Banco de Dados:** [PostgreSQL]
 * **Containerização:** Docker & Docker Compose
 * **[Outra tecnologia importante, se houver]:** [Ex: Redis, RabbitMQ, etc.]
 
@@ -27,17 +27,27 @@ A infraestrutura é gerenciada inteiramente via **Docker Compose**, que orquestr
 
 Graças ao uso do Docker, você não precisa instalar o banco de dados ou dependências da linguagem localmente. Você só precisará do **Docker** e do **Docker Compose** instalados na sua máquina.
 
-### Prerrequisitos
+### Pré-requisitos
 * [Docker](https://docs.docker.com/get-docker/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Passo a Passo
 
 1.  **Clonar o repositório:**
+    
+    #### Via HTTPS
+
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-    cd seu-repositorio
+    git clone https://github.com/RaildoBru/vehicle-management-service.git
+    cd vehicle-management-service
     ```
+    #### Via SSH
+
+    ```bash
+    git clone git@github.com:RaildoBru/vehicle-management-service.git
+    cd vehicle-management-service
+    ```
+
 
 2.  **Configurar as variáveis de ambiente:**
     Copie o arquivo de exemplo de ambiente (se houver) e ajuste se necessário:
