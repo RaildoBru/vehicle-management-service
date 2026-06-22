@@ -9,8 +9,11 @@ export default {
   ],
   coverageDirectory: 'coverage',
   transform: {
-    '^.+\\.js$': 'babel-jest'
+    '^.+\\.(js|ts)$': 'babel-jest'
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$))'
+  ],
   modulePathIgnorePatterns: [
     '<rootDir>/dist/',
     '<rootDir>/src/generated/'
