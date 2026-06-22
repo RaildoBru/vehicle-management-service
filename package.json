@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage --coverageThreshold '{\"global\":{\"statements\":80,\"branches\":80,\"functions\":80,\"lines\":80}}'",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
@@ -20,7 +20,12 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8.0.1",
+    "babel-jest": "^30.4.1",
+    "jest": "^30.4.2",
     "nodemon": "^3.1.14",
-    "prisma": "^7.8.0"
+    "prisma": "^7.8.0",
+    "supertest": "^7.2.2"
   }
 }
