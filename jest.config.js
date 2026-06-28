@@ -8,9 +8,8 @@ export default {
     '!src/app.js'
   ],
   coverageDirectory: 'coverage',
-  transform: {
-    '^.+\\.(js|ts)$': 'babel-jest'
-  },
+  coverageProvider: 'v8',
+  
   transformIgnorePatterns: [
     'node_modules/(?!(.*\\.mjs$))'
   ],
