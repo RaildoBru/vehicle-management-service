@@ -5,12 +5,12 @@ import vehicleController from '../controllers/vehicle.controller.js';
 const router = express.Router();
 
 // GET all vehicles
-router.get('/vehicles', vehicleController.listVehicles);
+router.get('/', vehicleController.listVehicles);
 // GET vehicle by ID
-router.get('/vehicles/:id', vehicleController.getVehicleById);
+router.get('/:id', vehicleController.getVehicleById);
 // POST create new vehicle
-router.post('/vehicles', vehicleController.createVehicle);
-
-router.put('/vehicles/:id', vehicleController.updateVehicle);
+router.post('/', vehicleController.createVehicle);
+// PUT update vehicle by ID
+router.put('/:id', vehicleController.updateVehicle);
 
 export default router;

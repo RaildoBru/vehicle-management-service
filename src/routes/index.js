@@ -5,9 +5,6 @@ import vehicleRoutes from './vehicle.routes.js';
 
 const router = express.Router();
 
-router.use(
-    healthRoutes,
-    vehicleRoutes
-);
-
+router.use('/health', healthRoutes);
+router.use('/vehicles', vehicleRoutes);
 export default router;
