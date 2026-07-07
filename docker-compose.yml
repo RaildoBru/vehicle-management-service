@@ -1,22 +1,28 @@
+networks:
+  vehicle-network:
+    name: vehicle-network
+    driver: bridge
+    #external: false
 services:
-  
+
   app:
     build: .
     container_name: vehicle-management-service
-    
-    
 
     ports:
       - "${PORT}:${PORT}"
+
     volumes:
       - .:/app
-      - /app/node_modules
 
     env_file:
       - .env
 
     depends_on:
       - postgres
+
+    networks:
+      - vehicle-network
 
   postgres:
     image: postgres:17
@@ -35,6 +41,9 @@ services:
 
     volumes:
       - vehicle_management_postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - vehicle-network
 
 volumes:
   vehicle_management_postgres_data:

@@ -15,8 +15,9 @@ model vehicles {
   color     String
   price     Decimal
   status    VehicleStatus @default(AVAILABLE)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      
+  createdAt DateTime      @default(now()) 
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 enum VehicleStatus {

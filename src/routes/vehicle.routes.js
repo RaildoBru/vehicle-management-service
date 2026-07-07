@@ -12,5 +12,9 @@ router.get('/:id', vehicleController.getVehicleById);
 router.post('/', vehicleController.createVehicle);
 // PUT update vehicle by ID
 router.put('/:id', vehicleController.updateVehicle);
+//Soft Delete vehicle by ID
+router.delete('/:id', vehicleController.softDelete);
+
+router.patch("/:id/status", vehicleController.patchVehicle);
 
 export default router;

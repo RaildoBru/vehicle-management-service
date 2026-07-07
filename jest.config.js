@@ -22,5 +22,13 @@ export default {
     '/node_modules/',
     '/src/generated/'
   ],
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80
+    }
+  }
 
 };
