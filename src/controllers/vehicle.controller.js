@@ -8,7 +8,7 @@ class VehicleController {
             return res.status(200).json(vehicles);
 
         } catch (error) {
-            res.status(500).json({ error: "Erro ao buscar veículos com filtros", details: error });
+            res.status(500).json({ error: "Erro ao buscar veículos com filtros"});
         }
     }
     async getVehicleById(req, res) {
@@ -20,7 +20,7 @@ class VehicleController {
             }
             return res.status(200).json(vehicle);
         } catch (error) {
-            res.status(500).json({ error: "Erro ao buscar veículo por ID", details: error });
+            res.status(500).json({ error: "Erro ao buscar veículo por ID"});
         }
     }
 
@@ -46,13 +46,12 @@ class VehicleController {
             return res.status(400).json({ error: "Ano e preço devem ser números" });
         }
 
-        const data = req.body; // Supondo que os dados do veículo venham no corpo da requisição
-        const newVehicle = await vehicleService.createVehicle(data);
-            return res.status(201).json(newVehicle);
         try {
-            
+            const data = req.body; // Supondo que os dados do veículo venham no corpo da requisição
+            const newVehicle = await vehicleService.createVehicle(data);
+            return res.status(201).json(newVehicle);
         } catch (error) {
-            res.status(500).json({ error: "Erro ao criar veículo", details: error });
+            res.status(500).json({ error: "Erro ao criar veículo"});
         }   
     }
     async updateVehicle(req, res) {
@@ -65,7 +64,32 @@ class VehicleController {
             }
             return res.status(200).json(updatedVehicle);
         } catch (error) {
-            res.status(500).json({ error: "Erro ao atualizar veículo", details: error });
+            res.status(500).json({ error: "Erro ao atualizar o veículo"});
+        }
+    }
+    async softDelete(req, res){
+        const { id } = req.params;
+        try {
+            const deletedVehicle = await vehicleService.softDelete(id);
+            if(!deletedVehicle){
+                return res.status(404).json({ error: "Veículo não encontrado" });
+            }
+            return res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ error: "Erro ao deletar o veículo"});
+        }
+    }
+    async patchVehicle(req, res) {
+        const { id } = req.params;
+        const data = req.body;
+        try {
+            const patchedVehicle = await vehicleService.patchVehicle(id, data);
+            if (!patchedVehicle) {
+                return res.status(404).json({ error: "Veículo não encontrado" });
+            }
+            return res.status(200).json(patchedVehicle);
+        } catch (error) {
+            res.status(500).json({ error: "Erro ao atualizar parcialmente o veículo", details: error.message });
         }
     }
 

@@ -48,7 +48,15 @@ describe('Vehicle Routes', () => {
       expect(routes.some(r => r.methods.includes('put') && r.path === '/:id')).toBe(true);
     });
 
-    it('should have 4 routes configured', () => {
+    it('should have DELETE route for soft deleting vehicle', () => {
+      const routes = vehicleRoutes.stack
+        .filter(r => r.route)
+        .map(r => ({ methods: Object.keys(r.route.methods), path: r.route.path }));
+
+      expect(routes.some(r => r.methods.includes('delete') && r.path === '/:id')).toBe(true);
+    });
+
+    it('should have 6 routes configured', () => {
       const routes = [];
       vehicleRoutes.stack.forEach((r) => {
         if (r.route) {
@@ -59,7 +67,7 @@ describe('Vehicle Routes', () => {
         }
       });
 
-      expect(routes.length).toBe(4);
+      expect(routes.length).toBe(6);
     });
   });
 });

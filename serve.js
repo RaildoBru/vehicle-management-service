@@ -1,10 +1,10 @@
 require('dotenv').config();
 
-const app = require('./app');
+import { listen } from './app';
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+listen(PORT, () => {
   console.log(
     `🚀 Vehicle Management Service running on port ${PORT}`
   );
