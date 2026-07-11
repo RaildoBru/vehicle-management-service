@@ -19,6 +19,8 @@ describe('VehicleController', () => {
     app.get('/vehicles/:id', vehicleController.getVehicleById);
     app.post('/vehicles', vehicleController.createVehicle);
     app.put('/vehicles/:id', vehicleController.updateVehicle);
+    app.delete('/vehicles/:id', vehicleController.softDelete);
+    app.patch('/vehicles/:id/status', vehicleController.patchVehicle);
 
     jest.clearAllMocks();
   });
@@ -357,7 +359,7 @@ describe('VehicleController', () => {
         .send({ price: 26000 })
         .expect(500);
 
-      expect(response.body.error).toBe('Erro ao atualizar veículo');
+      expect(response.body.error).toBe('Erro ao atualizar o veículo');
     });
 
     it('should pass id and data to service', async () => {
@@ -394,5 +396,62 @@ describe('VehicleController', () => {
 
       expect(vehicleService.updateVehicle).toHaveBeenCalledWith('1', updateData);
     });
+
+    it('should soft delete vehicle and return 204', async () => {
+      vehicleService.softDelete = jest.fn().mockResolvedValue({ id: '1', deletedAt: new Date() });
+
+      await request(app)
+        .delete('/vehicles/1')
+        .expect(204);
+
+      expect(vehicleService.softDelete).toHaveBeenCalledWith('1');
+    });
+
+    it('should return 404 when softDelete not found', async () => {
+      vehicleService.softDelete = jest.fn().mockResolvedValue(null);
+
+      const res = await request(app)
+        .delete('/vehicles/999')
+        .expect(404);
+
+      expect(res.body.error).toBe('Veículo não encontrado');
+    });
+
+    it('should patch vehicle status and return 200', async () => {
+      const body = { status: 'SOLD' };
+      vehicleService.patchVehicle = jest.fn().mockResolvedValue({ id: '1', status: 'SOLD' });
+
+      const res = await request(app)
+        .patch('/vehicles/1/status')
+        .send(body)
+        .expect(200);
+
+      expect(res.body).toEqual({ id: '1', status: 'SOLD' });
+      expect(vehicleService.patchVehicle).toHaveBeenCalledWith('1', body);
+    });
+
+    it('should return 404 when patchVehicle not found', async () => {
+      vehicleService.patchVehicle = jest.fn().mockResolvedValue(null);
+
+      const res = await request(app)
+        .patch('/vehicles/999/status')
+        .send({ status: 'AVAILABLE' })
+        .expect(404);
+
+      expect(res.body.error).toBe('Veículo não encontrado');
+    });
+
+    it('should return 500 when patchVehicle throws', async () => {
+      vehicleService.patchVehicle = jest.fn().mockRejectedValue(new Error('boom'));
+
+      const res = await request(app)
+        .patch('/vehicles/1/status')
+        .send({ status: 'SOLD' })
+        .expect(500);
+
+      expect(res.body.error).toBe('Erro ao atualizar parcialmente o veículo');
+    });
   });
 });
+//  Expected: "Erro ao atualizar veículo"
+    //Received: "Erro ao atualizar o veículo"

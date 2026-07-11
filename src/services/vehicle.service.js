@@ -7,7 +7,9 @@ class VehicleService {
     }
     async listVehicles(filters) {
         
-        const status = filters.status ?? 'AVAILABLE';
+        filters = filters || {};
+
+        const status = filters.status ? String(filters.status).toUpperCase() : 'AVAILABLE';
         const sortField = filters.sortField || 'price';
         const sortOrder = filters.order === 'desc' ? 'desc' : 'asc';
 
@@ -43,15 +45,26 @@ class VehicleService {
             year: data.year,
             color: capitalizeFirstLetter(data.color) || 'Unknown',
             price: data.price,
+        };
+
+        // include timestamps before persisting
+        const vehicleDataWithTimestamps = {
+            ...vehicleData,
             updatedAt: new Date(),
         };
 
-        return await vehicleRepository.createVehicle(vehicleData);
+        return await vehicleRepository.createVehicle(vehicleDataWithTimestamps);
     }
 
     async updateVehicle(id, data) {
 
         return await vehicleRepository.updateVehicle(id, data);
+    }
+    async softDelete(id){
+        return await vehicleRepository.softDelete(id);
+    }
+    async patchVehicle(id, status) {
+        return await vehicleRepository.patchVehicle(id, status);
     }
 }
 

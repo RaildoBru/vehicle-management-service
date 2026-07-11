@@ -22,7 +22,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { status: undefined },
+        where: { deletedAt: null, status: undefined },
         orderBy: { price: 'asc' },
       });
     });
@@ -38,7 +38,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { status: 'active' },
+        where: { deletedAt: null, status: 'active' },
         orderBy: { price: 'asc' },
       });
     });
@@ -57,7 +57,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { status: undefined },
+        where: { deletedAt: null, status: undefined },
         orderBy: { brand: 'desc' },
       });
     });
@@ -77,7 +77,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { status: 'active' },
+        where: { deletedAt: null, status: 'active' },
         orderBy: { price: 'desc' },
       });
     });
@@ -115,7 +115,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicle);
       expect(prisma.vehicles.findUnique).toHaveBeenCalledWith({
-        where: { id: '1' }
+        where: { id: '1', deletedAt: null }
       });
     });
 
@@ -141,7 +141,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toBeNull();
       expect(prisma.vehicles.findUnique).toHaveBeenCalledWith({
-        where: { id: 'invalid-id' }
+        where: { id: 'invalid-id', deletedAt: null }
       });
     });
   });
@@ -270,7 +270,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockUpdatedVehicle);
       expect(prisma.vehicles.update).toHaveBeenCalledWith({
-        where: { id: '1' },
+        where: { id: '1', deletedAt: null },
         data: {
           ...updateData,
           updatedAt: expect.any(Date)
@@ -379,6 +379,38 @@ describe('VehicleRepository', () => {
       expect(result.price).toBe(30000);
       expect(result.status).toBe('sold');
       expect(result.color).toBe('red');
+    });
+  });
+
+  describe('softDelete and patchVehicle', () => {
+    it('should soft delete a vehicle', async () => {
+      const mockDeleted = { id: '1', deletedAt: new Date() };
+      prisma.vehicles.update.mockResolvedValue(mockDeleted);
+
+      const result = await VehicleRepository.softDelete('1');
+
+      expect(result).toEqual(mockDeleted);
+      expect(prisma.vehicles.update).toHaveBeenCalledWith({
+        where: { id: '1', deletedAt: null },
+        data: { deletedAt: expect.any(Date) }
+      });
+    });
+
+    it('should patch vehicle status', async () => {
+      const status = { status: 'SOLD' };
+      const patched = { id: '1', status: 'SOLD', updatedAt: new Date() };
+      prisma.vehicles.update.mockResolvedValue(patched);
+
+      const result = await VehicleRepository.patchVehicle('1', status);
+
+      expect(result).toEqual(patched);
+      expect(prisma.vehicles.update).toHaveBeenCalledWith({
+        where: { id: '1', deletedAt: null },
+        data: {
+          ...status,
+          updatedAt: expect.any(Date),
+        },
+      });
     });
   });
 

@@ -17,6 +17,8 @@ class VehicleRepository {
         if (filters.status) {
             where.status = filters.status;
         }
+        // Exclude soft-deleted records
+        where.deletedAt = null;
         where.status = filters.status;
         return prisma.vehicles.findMany({
         where: where,
@@ -27,7 +29,7 @@ class VehicleRepository {
     }
     async getVehicleById(id) {         
         const result = await prisma.vehicles.findUnique({
-            where: { id }
+            where: { id, deletedAt: null }
         });
         return await result;
     }
@@ -41,13 +43,33 @@ class VehicleRepository {
     }
     async updateVehicle(id, data) {
         const updatedVehicle = await prisma.vehicles.update({
-            where: { id },
+            where: { id,deletedAt: null },
             data: {
                 ...data,
                 updatedAt: new Date(),
             },
         });
         return updatedVehicle;
+    }
+
+    async softDelete(id){
+        const softDelete = await prisma.vehicles.update({
+            where: { id,deletedAt: null },
+            data:{
+                deletedAt: new Date(),
+            }
+        });
+        return softDelete;
+    }
+    async patchVehicle(id, status) {
+        const patchedVehicle = await prisma.vehicles.update({
+            where: { id, deletedAt: null },
+            data: {
+                ...status,
+                updatedAt: new Date(),
+            },
+        });
+        return patchedVehicle;
     }
 }
 
