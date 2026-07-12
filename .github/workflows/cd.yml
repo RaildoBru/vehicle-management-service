@@ -18,6 +18,12 @@ jobs:
 
       - name: Create Kind Cluster
         uses: helm/kind-action@v1
+      
+      - name: List Kind Clusters
+        run: kind get clusters
+      
+      - name: List Nodes
+        run: kubectl get nodes
 
       - name: Load Image
         run: kind load docker-image vehicle-management-service:latest
