@@ -2,25 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: vehicle-management-service
+  name: vehicle-management
 
 spec:
   replicas: 2
 
   selector:
     matchLabels:
-    app: vehicle-management-service
+      app: vehicle-management
 
   template:
     metadata:
       labels:
-        app: vehicle-management-service
+        app: vehicle-management
 
     spec:
       containers:
-        - name: app
+        - name: vehicle-management
           image: vehicle-management-service:latest
-
           imagePullPolicy: Never
 
           ports:
