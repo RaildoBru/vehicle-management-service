@@ -3,28 +3,30 @@ name: CD
 on:
   push:
     branches:
-      - main
+      - master
+      - qa
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /var/www/vehicle-management-service
+      - uses: actions/checkout@v4
 
-            git pull origin main
+      - name: Build Image
+        run: docker build -t vehicle-management-service:latest .
 
-            docker compose down
+      - name: Create Kind Cluster
+        uses: helm/kind-action@v1
+      
+      - name: List Kind Clusters
+        run: kind get clusters
+      
+      - name: List Nodes
+        run: kubectl get nodes
 
-            docker compose build --no-cache
+      - name: Load Image for Chart Testing
+        run: kind load docker-image vehicle-management-service:latest --name chart-testing
 
-            docker compose up -d
-
-            docker image prune -f
+      - name: Deploy
+        run: kubectl apply -f k8s/
