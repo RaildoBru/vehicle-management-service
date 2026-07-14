@@ -426,4 +426,59 @@ describe('VehicleService', () => {
       await expect(VehicleService.updateVehicle('1', { price: 26000 })).rejects.toThrow('Update failed');
     });
   });
+
+  describe('softDelete', () => {
+    it('should soft delete vehicle', async () => {
+      vehicleRepository.softDelete.mockResolvedValue(true);
+
+      const result = await VehicleService.softDelete('1');
+
+      expect(result).toBe(true);
+      expect(vehicleRepository.softDelete).toHaveBeenCalledWith('1');
+    });
+
+    it('should return false when vehicle not found', async () => {
+      vehicleRepository.softDelete.mockResolvedValue(false);
+
+      const result = await VehicleService.softDelete('999');
+
+      expect(result).toBe(false);
+      expect(vehicleRepository.softDelete).toHaveBeenCalledWith('999');
+    });
+
+    it('should handle soft delete errors', async () => {
+      const error = new Error('Delete failed');
+      vehicleRepository.softDelete.mockRejectedValue(error);
+
+      await expect(VehicleService.softDelete('1')).rejects.toThrow('Delete failed');
+    });
+  });
+
+  describe('patchVehicle', () => {
+    it('should patch vehicle status', async () => {
+      const mockPatchedVehicle = { id: '1', status: 'SOLD' };
+      vehicleRepository.patchVehicle.mockResolvedValue(mockPatchedVehicle);
+
+      const result = await VehicleService.patchVehicle('1', 'SOLD');
+
+      expect(result).toEqual(mockPatchedVehicle);
+      expect(vehicleRepository.patchVehicle).toHaveBeenCalledWith('1', 'SOLD');
+    });
+
+    it('should return null when vehicle not found', async () => {
+      vehicleRepository.patchVehicle.mockResolvedValue(null);
+
+      const result = await VehicleService.patchVehicle('999', 'SOLD');
+
+      expect(result).toBeNull();
+      expect(vehicleRepository.patchVehicle).toHaveBeenCalledWith('999', 'SOLD');
+    });
+
+    it('should handle patch errors', async () => {
+      const error = new Error('Patch failed');
+      vehicleRepository.patchVehicle.mockRejectedValue(error);
+
+      await expect(VehicleService.patchVehicle('1', 'SOLD')).rejects.toThrow('Patch failed');
+    });
+  });
 });
