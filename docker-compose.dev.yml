@@ -1,4 +1,0 @@
-services:
-  app:
-    # O 'sh -c' permite rodar comandos de terminal antes do seu app iniciar
-    command: sh -c "echo '👉 DEBUG: O ARQUIVO DE DEV FOI CARREGADO COM SUCESSO! 🚀'"

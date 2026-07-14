@@ -55,9 +55,7 @@ class VehicleService {
 
         return await vehicleRepository.createVehicle(vehicleDataWithTimestamps);
     }
-
     async updateVehicle(id, data) {
-
         return await vehicleRepository.updateVehicle(id, data);
     }
     async softDelete(id){
