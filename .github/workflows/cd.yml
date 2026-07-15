@@ -1,0 +1,32 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+      - qa
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Image
+        run: docker build -t vehicle-management-service:latest .
+
+      - name: Create Kind Cluster
+        uses: helm/kind-action@v1
+      
+      - name: List Kind Clusters
+        run: kind get clusters
+      
+      - name: List Nodes
+        run: kubectl get nodes
+
+      - name: Load Image for Chart Testing
+        run: kind load docker-image vehicle-management-service:latest --name chart-testing
+
+      - name: Deploy
+        run: kubectl apply -f k8s/
