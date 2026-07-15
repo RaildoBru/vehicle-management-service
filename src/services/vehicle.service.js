@@ -9,7 +9,7 @@ class VehicleService {
         
         filters = filters || {};
 
-        const status = filters.status ? String(filters.status).toUpperCase() : 'AVAILABLE';
+        const status = (filters.status || 'AVAILABLE').trim().toUpperCase();
         const sortField = filters.sortField || 'price';
         const sortOrder = filters.order === 'desc' ? 'desc' : 'asc';
 

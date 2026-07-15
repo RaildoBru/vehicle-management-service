@@ -363,8 +363,8 @@ describe('VehicleController', () => {
     });
 
     it('should pass id and data to service', async () => {
-      const updateData = { price: 28000, status: 'sold' };
-      vehicleService.updateVehicle.mockResolvedValue({ id: '1', ...updateData });
+      const updateData = { price: 28000 };
+      vehicleService.updateVehicle.mockResolvedValue({ id: '1', price: 28000 });
 
       await request(app)
         .put('/vehicles/1')

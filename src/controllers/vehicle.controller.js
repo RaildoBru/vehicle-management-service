@@ -3,7 +3,7 @@ import vehicleService from '../services/vehicle.service.js';
 class VehicleController {
     async listVehicles(req, res) {
         try {
-            const filters = req.query; // Supondo que os filtros venham como query parameters
+            const filters = req.query;
             const vehicles = await vehicleService.listVehicles(filters);
             return res.status(200).json(vehicles);
 
@@ -47,16 +47,23 @@ class VehicleController {
         }
 
         try {
-            const data = req.body; // Supondo que os dados do veículo venham no corpo da requisição
+            const data = req.body;
             const newVehicle = await vehicleService.createVehicle(data);
             return res.status(201).json(newVehicle);
         } catch (error) {
             res.status(500).json({ error: "Erro ao criar veículo"});
-        }   
+        }
     }
     async updateVehicle(req, res) {
         const { id } = req.params;
-        const data = req.body;
+        const { status, ...data } = req.body;
+
+        if (status) {
+            return res.status(422).json({
+                message: 'O campo status deve ser atualizado através de uma operação específica.'
+            });
+        }
+
         try {
             const updatedVehicle = await vehicleService.updateVehicle(id, data);
             if (!updatedVehicle) {
@@ -89,7 +96,7 @@ class VehicleController {
             }
             return res.status(200).json(patchedVehicle);
         } catch (error) {
-            res.status(500).json({ error: "Erro ao atualizar parcialmente o veículo", details: error.message });
+            res.status(500).json({ error: "Erro ao atualizar parcialmente o veículo"});
         }
     }
 
