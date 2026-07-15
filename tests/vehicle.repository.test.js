@@ -22,7 +22,8 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { deletedAt: null, status: undefined },
+        select: { id: true, brand: true, model: true, price: true, status: true },
+        where: { deletedAt: null },
         orderBy: { price: 'asc' },
       });
     });
@@ -38,6 +39,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
+        select: { id: true, brand: true, model: true, price: true, status: true },
         where: { deletedAt: null, status: 'active' },
         orderBy: { price: 'asc' },
       });
@@ -57,7 +59,8 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
-        where: { deletedAt: null, status: undefined },
+        select: { id: true, brand: true, model: true, price: true, status: true },
+        where: { deletedAt: null },
         orderBy: { brand: 'desc' },
       });
     });
@@ -77,6 +80,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicles);
       expect(prisma.vehicles.findMany).toHaveBeenCalledWith({
+        select: { id: true, brand: true, model: true, price: true, status: true },
         where: { deletedAt: null, status: 'active' },
         orderBy: { price: 'desc' },
       });
@@ -115,6 +119,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockVehicle);
       expect(prisma.vehicles.findUnique).toHaveBeenCalledWith({
+        select: { id: true, brand: true, model: true, price: true, status: true },
         where: { id: '1', deletedAt: null }
       });
     });
@@ -141,6 +146,7 @@ describe('VehicleRepository', () => {
 
       expect(result).toBeNull();
       expect(prisma.vehicles.findUnique).toHaveBeenCalledWith({
+        select: { id: true, brand: true, model: true, price: true, status: true },
         where: { id: 'invalid-id', deletedAt: null }
       });
     });
@@ -168,7 +174,12 @@ describe('VehicleRepository', () => {
 
       expect(result).toEqual(mockCreatedVehicle);
       expect(prisma.vehicles.create).toHaveBeenCalledWith({
-        data: vehicleData
+        data: vehicleData,
+        omit: {
+          createdAt: true,
+          updatedAt: true,
+          deletedAt: true,
+        }
       });
     });
 
@@ -274,6 +285,11 @@ describe('VehicleRepository', () => {
         data: {
           ...updateData,
           updatedAt: expect.any(Date)
+        },
+        omit: {
+          createdAt: true,
+          updatedAt: true,
+          deletedAt: true,
         }
       });
     });

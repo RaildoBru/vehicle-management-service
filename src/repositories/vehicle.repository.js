@@ -1,4 +1,5 @@
 import prisma from "../database/prisma-database.js";
+import { vehicleListSelect } from "../constants/vehicle.select.js"
 
 class VehicleRepository {
     async listVehicles(filters = {}) {
@@ -19,16 +20,18 @@ class VehicleRepository {
         }
         // Exclude soft-deleted records
         where.deletedAt = null;
-        where.status = filters.status;
+
         return prisma.vehicles.findMany({
-        where: where,
-        orderBy: {
-                [sortField]: sortOrder,
-            },
+            select: vehicleListSelect,
+            where: where,
+            orderBy: {
+                    [sortField]: sortOrder,
+                },
         });
     }
     async getVehicleById(id) {         
         const result = await prisma.vehicles.findUnique({
+            select: vehicleListSelect,
             where: { id, deletedAt: null }
         });
         return await result;
@@ -37,7 +40,12 @@ class VehicleRepository {
         const createdVehicle = await prisma
             .vehicles
             .create({
-                data
+                data,
+                omit: {
+                    createdAt: true,
+                    updatedAt: true,
+                    deletedAt: true,
+                }
             });
         return createdVehicle;
     }
@@ -48,6 +56,11 @@ class VehicleRepository {
                 ...data,
                 updatedAt: new Date(),
             },
+            omit: {
+                createdAt: true,
+                updatedAt: true,
+                deletedAt: true,
+            }
         });
         return updatedVehicle;
     }
