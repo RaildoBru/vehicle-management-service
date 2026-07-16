@@ -80,6 +80,6 @@ Abaixo estão os endpoints principais para testar a aplicação:
 | Método | Endpoint | Descrição | Payload (Se houver) |
 | :--- | :--- | :--- | :--- |
 | **GET** | `api/health` | Verifica se a API e o Banco estão online | Nenhum |
-| **GET** | `/api/api-docs` | Lista a documentação | Docs` |
+| **GET** | `/api-docs` | Lista a documentação | Docs |
 
 ---
