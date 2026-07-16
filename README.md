@@ -59,7 +59,12 @@ Graças ao uso do Docker, você não precisa instalar o banco de dados ou depend
 3.  **Subir os containers:**
     Execute o comando abaixo para baixar as imagens, buildar a aplicação e iniciar os serviços:
     ```bash
-    docker compose up --build
+    docker compose up -d
+    ```
+
+    Execute o comando abaixo para cria as tabelas com o prisma:
+    ```bash
+    docker exec -it vehicle-management-service npx prisma db push
     ```
     *Se preferir rodar em segundo plano, adicione a flag `-d`: `docker compose up -d`*
 
@@ -74,17 +79,7 @@ Abaixo estão os endpoints principais para testar a aplicação:
 
 | Método | Endpoint | Descrição | Payload (Se houver) |
 | :--- | :--- | :--- | :--- |
-| **GET** | `/api/status` | Verifica se a API e o Banco estão online | Nenhum |
-| **POST** | `/api/[recurso]` | Cria um novo registro | `{"nome": "Exemplo"}` |
-| **GET** | `/api/[recurso]` | Lista os registros | Nenhum |
-
-> 💡 **Dica de Avaliação:** Se o projeto possuir documentação Swagger, ela poderá ser acessada em `http://localhost:[PORTA]/api/docs` com os containers rodando.
+| **GET** | `api/health` | Verifica se a API e o Banco estão online | Nenhum |
+| **GET** | `/api/api-docs` | Lista a documentação | Docs` |
 
 ---
-
-## 🧪 Executando os Testes (Opcional)
-
-Se você implementou testes automatizados, inclua como o professor pode rodá-los dentro do container:
-
-```bash
-docker compose exec app [comando de teste, ex: npm test / pytest]
